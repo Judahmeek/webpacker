@@ -12,7 +12,7 @@ class Webpacker::Compiler
   # Webpacker::Compiler.env['FRONTEND_API_KEY'] = 'your_secret_key'
   cattr_accessor(:env) { {} }
 
-  delegate :config, :logger, to: :webpacker
+  delegate :config, :webpack_logger, to: :webpacker
 
   def initialize(webpacker)
     @webpacker = webpacker
@@ -28,7 +28,7 @@ class Webpacker::Compiler
         record_compilation_digest
       end
     else
-      logger.debug "Everything's up-to-date. Nothing to do"
+      webpack_logger.debug "Everything's up-to-date. Nothing to do"
       true
     end
   end
@@ -72,7 +72,7 @@ class Webpacker::Compiler
     end
 
     def run_webpack
-      logger.info "Compiling..."
+      webpack_logger.info "Compiling..."
 
       stdout, stderr, status = Open3.capture3(
         webpack_env,
@@ -81,15 +81,15 @@ class Webpacker::Compiler
       )
 
       if status.success?
-        logger.info "Compiled all packs in #{config.public_output_path}"
-        logger.error "#{stderr}" unless stderr.empty?
+        webpack_logger.info "Compiled all packs in #{config.public_output_path}"
+        webpack_logger.error "#{stderr}" unless stderr.empty?
 
         if config.webpack_compile_output?
-          logger.info stdout
+          webpack_logger.info stdout
         end
       else
         non_empty_streams = [stdout, stderr].delete_if(&:empty?)
-        logger.error "\nCOMPILATION FAILED:\nEXIT STATUS: #{status}\nOUTPUTS:\n#{non_empty_streams.join("\n\n")}"
+        webpack_logger.error "\nCOMPILATION FAILED:\nEXIT STATUS: #{status}\nOUTPUTS:\n#{non_empty_streams.join("\n\n")}"
       end
 
       status.success?

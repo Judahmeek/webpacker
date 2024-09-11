@@ -1,5 +1,5 @@
 class Webpacker::Commands
-  delegate :config, :compiler, :manifest, :logger, to: :@webpacker
+  delegate :config, :compiler, :manifest, :webpack_logger, to: :@webpacker
 
   def initialize(webpacker)
     @webpacker = webpacker
@@ -31,7 +31,7 @@ class Webpacker::Commands
         .each do |file|
           if File.file?(file)
             File.delete(file)
-            logger.info "Removed #{file}"
+            webpack_logger.info "Removed #{file}"
           end
         end
     end

@@ -23,14 +23,14 @@ module Webpacker
   end
 
   def ensure_log_goes_to_stdout
-    old_logger = Webpacker.logger
-    Webpacker.logger = Logger.new(STDOUT)
+    old_logger = Webpacker.webpack_logger
+    Webpacker.webpack_logger = Logger.new(STDOUT)
     yield
   ensure
-    Webpacker.logger = old_logger
+    Webpacker.webpack_logger = old_logger
   end
 
-  delegate :logger, :logger=, :env, :inlining_css?, to: :instance
+  delegate :webpack_logger, :webpack_logger=, :env, :inlining_css?, to: :instance
   delegate :config, :compiler, :manifest, :commands, :dev_server, to: :instance
   delegate :bootstrap, :clean, :clobber, :compile, to: :commands
 end

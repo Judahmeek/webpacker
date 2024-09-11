@@ -55,7 +55,7 @@ class Webpacker::Manifest
     end
 
     def compile
-      Webpacker.logger.tagged("Webpacker") { compiler.compile }
+      Webpacker.webpack_logger.tagged("Webpacker") { compiler.compile }
     end
 
     def data

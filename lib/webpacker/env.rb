@@ -1,7 +1,7 @@
 class Webpacker::Env
   DEFAULT = "production".freeze
 
-  delegate :config_path, :logger, to: :@webpacker
+  delegate :config_path, :webpacker_logger, to: :@webpacker
 
   def self.inquire(webpacker)
     new(webpacker).inquire
@@ -22,7 +22,7 @@ class Webpacker::Env
     end
 
     def fallback_env_warning
-      logger.info "RAILS_ENV=#{Rails.env} environment is not defined in config/webpacker.yml, falling back to #{DEFAULT} environment"
+      webpack_logger.info "RAILS_ENV=#{Rails.env} environment is not defined in config/webpacker.yml, falling back to #{DEFAULT} environment"
     end
 
     def available_environments
